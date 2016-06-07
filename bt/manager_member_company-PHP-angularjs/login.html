@@ -1,0 +1,37 @@
+<html>
+<head>
+	<link rel="stylesheet" href="http://localhost/php/bootstrap-3/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://localhost/php/angular.min.js"></script>
+	<script src="http://localhost/php/bootstrap-3/js/bootstrap.min.js"></script>
+	<script src="http://localhost/php/basic/login.js"></script>
+</head>
+</head>
+<body>
+<div class="container" ng-app="login" ng-controller="login_control">
+    <div class="page-header">
+  <h1>Wellcome to admin side <small>Please Login</small></h1>
+</div>
+<form class="form-horizontal" role="form">
+  <div class="form-group">
+    <label class="control-label col-sm-2" >User:</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" name="name" placeholder="Enter user" ng-model="user.tk">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="pwd" >Password:</label>
+    <div class="col-sm-3"> 
+      <input type="password" class="form-control" id="pwd" name="pass" ng-model="user.pass" placeholder="Enter password">
+    </div>
+  </div>
+  <div class="form-group"> 
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-info" ng-click="login1()">Login</button>
+      <label ng-show="dk" style="color: red">User name or password inCorrec !</label>
+    </div>
+  </div>
+</form>
+</div>
+</body>
+</html>

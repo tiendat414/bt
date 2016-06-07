@@ -1,0 +1,230 @@
+<html>
+<head>
+<link rel="stylesheet"
+	href="http://localhost/php/bootstrap-3/css/bootstrap.css">
+<script src="http://localhost/php/jquery-1.12.3.min.js"></script>
+<script src="http://localhost/php/bootstrap-3/js/bootstrap.min.js"></script>
+<!--	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>-->
+<script src="http://localhost/php/angular.min.js"></script>
+<script type="text/javascript" src="http://localhost/php/basic/manager.js"></script>
+</head>
+<body>
+<div class="container" ng-app="myapp" ng-controller='control'>
+<form role="form" class="form-inline">
+	<div class="form-group"	ng-init="search={'divison':'--All--','status':'--All--','manager':'--All--','user':'--All--'}">
+		<label>ID/Name:</label> 
+		<input class="form-control"	type="text" ng-model="search.input" required>			
+		<label>Divison:</label>			
+		<select class="form-control"	ng-model="search.divison">
+			<option>--All--</option>
+			<option ng-repeat="x in divison">{{x.value}}</option>
+		</select>
+		<label>Status:</label>				
+		<select class="form-control" ng-model="search.status">
+			<option>--All--</option>
+			<option>Active</option>
+			<option>inActive</option>
+		</select>
+		<label>Manager:</label>				
+		<select class="form-control" ng-model="search.manager">
+			<option>--All--</option>
+			<option ng-repeat="y in manager">{{y.value}}</option>
+		</select>
+		
+		<label>User Type:</label> 				
+		<select class="form-control" ng-model="search.user">
+			<option>--All--</option>
+			<option>Member</option>
+			<option>BSE/Manager</option>
+		</select>
+			
+					
+		<div class="col-md-12" style="margin-top: 30px">
+			<div class="col-md-1">
+				<label class="btn btn-primary"	data-toggle='modal' data-target='#myModal2' ng-click="add_mem()"><i class="glyphicon glyphicon-plus"></i> Add Member</label>
+			</div>
+			<div class="col-md-offset-4">
+				<label class="btn btn-info" ng-click="bt_search()"><i class="glyphicon glyphicon-search" ></i> Search </label>	
+			<label class="btn btn-success" ng-click="reset_search()"><i class="glyphicon glyphicon-trash"></i> Reset</label>
+			</div>
+		</div>
+	</div>
+</form>
+<div class="table-responsive">
+	<table cellspacing="0" width="100%" class="table table-hover">
+		<thead>
+			<tr>
+				<th>No</th>
+				<th>Code</th>
+				<th>Member</th>
+				<th>Divison</th>
+				<th>Manager/BSE</th>
+				<th>User Type</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="x in stt">
+				<td>{{x.No}}</td>
+				<td>{{x.Code}}</td>
+				<td>{{x.Member}}</td>
+				<td>{{x.Divison}}</td>
+				<td>{{x.BSEManager}}</td>
+				<td>{{x.User}}</td>
+				<td>
+				<button type='button' class='btn btn-info btn-xs' data-toggle='modal' keyid={{x.Code}} data-target='#myModal' ng-click="openmodal(x.Code)">{{x.Status}}</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+<label ng-show="bl" style="color: red"> No Result</label></div>
+<div id="myModal" class="modal fade" role="dialog">
+	<div class="modal-dialog"><!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Edit Member</h4>
+			</div>
+			<div class="modal-body">
+				<form  class="form-horizontal" role="form">				
+					<div class="col-md-6">
+						<label>Member Code:(*)</label>
+						<input	type="text" class="form-control" id="email" disabled="disabled"	ng-model="edit.code">
+					</div>
+					<div class='col-md-6'>
+						<label>Birthday</label>
+						<input type="date" class="form-control" id="pwd" ng-model="birthday">
+					</div>
+					<div class="col-md-6">
+						<label>Name:(*) </label>
+						<input type="text" class="form-control" placeholder="Name..." ng-model="edit.name"	required>
+					 </div>
+					<div class="col-md-6">
+						<label>Manager:</label> 
+						<select	class="form-control" id="sel1" ng-model="edit.manager">
+							<option>--All--</option>
+							<option ng-repeat="x in manager">{{x.value}}</option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<label>User Name:(*)</label>
+						 <input type="text" class="form-control" placeholder="User name..."	ng-model="edit.username" required>
+					</div>
+					<div class="col-md-6">
+						<label>Divison: </label>
+						 <select class="form-control" ng-model="edit.divison">
+							<option>--All--</option>
+							<option ng-repeat="x in divison">{{x.value}}</option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<label>Email:</label> 
+						<input type="email" placeholder="Email..." class="form-control" ng-model="edit.email">
+					</div>
+					<div class="col-md-6"><label>Start Work</label> <input type="date"
+						class="form-control" ng-model="start"></div>
+					<div class="col-md-6"><label>Status:</label> <select
+						class="form-control" ng-model="edit.status">
+						<option>Active</option>
+						<option>inActive</option>
+					</select></div>
+					<div class="col-md-6">
+						<label>Address:</label>
+						<input type="text" class="form-control" ng-model="edit.addr"></input>
+					</div>
+					<div style="margin-left: 400px ; margin-top: 10px">--End--</div>
+				</form>
+			</div>
+			<div class="modal-footer">			
+				<div class="col-md-7 pull-center">
+					<button type="submit" class="btn btn-primary" ng-click="submit()">Save</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Exit</button>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<div id="myModal2" class="modal fade" role="dialog" aria-hidden="true">
+	<div class="modal-dialog"><!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Add New Member</h4>
+			</div>
+			<div class="modal-body">
+				<form role="form" class="form-horizontal">
+					<div class="col-md-6">
+						<label>Member Code:(*)</label> <input
+						type="text" class="form-control" id="email" disabled="disabled"
+						ng-model="add.code">
+					</div>
+
+					<div class="col-md-6">
+						<label>Birthday</label> <input type="date"
+						class="form-control" id="pwd" ng-model="birthday_new">
+					</div>
+
+					<div class="col-md-6">
+						<label>Name:(*) </label> <input type="text"
+						class="form-control" placeholder="Name..." ng-model="add.name"
+						required>
+					</div>
+
+					<div class="col-md-6">
+						<label>Manager:</label> <select
+						class="form-control" id="sel1" ng-model="add.manager">
+						<option ng-repeat="x in manager">{{x.value}}</option>
+						</select>
+					</div>
+					
+					<div class="col-md-6">
+						<label>User Name:(*)</label> <input
+						type="text" class="form-control" placeholder="User name..."
+						ng-model="add.username" required>
+					</div>
+					
+					<div class="col-md-6">
+						<label>Divison: </label> <select
+						class="form-control" ng-model="add.divison">
+						<option ng-repeat="x in divison">{{x.value}}</option>
+						</select>
+					</div>
+					
+					<div class="col-md-6">
+						<label>Email:</label> <input type="email"
+						placeholder="Email..." class="form-control" ng-model="add.email">
+					</div>
+					
+					<div class="col-md-6">
+						<label>Start Work</label> <input type="date"
+						class="form-control" ng-model="start_new">
+					</div>
+				
+					<div class="col-md-6">
+						<label>User Type:</label>
+						<select class="form-control" ng-model="add.user">
+							<option>Member</option>
+							<option>BSE/Manager</option>
+						</select> 
+					</div>
+					<div class="col-md-6">
+						<label>Address:</label>
+						  <input
+						type="text" class="form-control" placeholder="Address..." ng-model="add.addr" required>
+					</div>
+					<div style="margin-left: 400px ; margin-top: 10px">--End--</div>					
+				</form>
+			</div>
+			<div class="modal-footer">
+				<div class="col-md-7 pull-center">					
+					<label class="btn btn-success" ng-click="clear()"><i class="glyphicon glyphicon-trash"></i> Reset</label>
+					<label class="btn btn-primary" ng-click="click_add()"><i class="glyphicon glyphicon-plus"></i> Add</label>
+					<label class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Exit</label>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+</div>
+</body>
+</html>
